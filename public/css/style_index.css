@@ -730,9 +730,16 @@ td {
 
 /* ─── FOOTER ─── */
 footer {
+    text-align: center;
+}
+
+.fl2 {
+    text-align: center;
+}
+footer {
     background: var(--deeper);
     padding: 28px 60px;
-    display: flex;
+
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;

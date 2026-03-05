@@ -24,9 +24,9 @@
             <div class="nav-name">Mater Dei Academy of Tagaytay Incorporated</div>
         </div>
         <div class="nav-links">
-            <button class="nav-link"
+            {{-- <button class="nav-link"
                 onclick="document.getElementById('appt-list').scrollIntoView({behavior:'smooth'})">View
-                Appointments</button>
+                Appointments</button> --}}
             <button class="nav-link"
                 onclick="document.getElementById('offices').scrollIntoView({behavior:'smooth'})">Offices</button>
             <button class="nav-link cta"
@@ -88,6 +88,10 @@
                             <input id="inp-date" class="fi" type="date">
                         </div>
                         <div class="fg">
+                            <label class="fl">Appointment Time <span>*</span></label>
+                            <input id="inp-time" class="fi" type="time">
+                        </div>
+                        <div class="fg">
                             <label class="fl">Reason for Visit <span>*</span></label>
                             <textarea id="inp-reason" class="fi" placeholder="Briefly describe your concern…"></textarea>
                         </div>
@@ -139,7 +143,7 @@
         </div>
     </div>
 
-    <!-- ─── APPOINTMENTS LIST ─── -->
+    {{-- <!-- ─── APPOINTMENTS LIST ─── -->
     <div class="appt-section" id="appt-list">
         <div class="sec-header">
             <div>
@@ -190,15 +194,11 @@
                 <div class="es">Use the form above to schedule your first visit.</div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- ─── FOOTER ─── -->
     <footer>
-        <center>
-            <div class="fl2" style="text-align: center;">© 2026 Mater Dei Academy of Tagaytay Incorporated. All
-                rights reserved.</div>
-        </center>
-
+        <div class="fl2">© 2026 Mater Dei Academy of Tagaytay Incorporated. All rights reserved.</div>
     </footer>
 
     <div class="toast" id="toast"></div>
