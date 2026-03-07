@@ -35,6 +35,7 @@
     </nav>
 
     <!-- ─── HERO ─── -->
+
     <section class="hero" id="book">
         <div class="hero-grid"></div>
         <div class="hero-inner">
@@ -77,51 +78,95 @@
                             <div class="fch-sub">Fill in all required fields below</div>
                         </div>
                     </div>
-                    <div class="form-body">
-                        <div class="fg">
-                            <label class="fl">Parent / Guardian Name <span>*</span></label>
-                            <input id="inp-name" class="fi" type="text" placeholder="e.g. Maria Santos"
-                                autocomplete="off">
+                    @if (session('success'))
+                        <div
+                            style="padding:12px; background:#d4edda; color:#155724; border-radius:6px; margin-bottom:15px;">
+                            {{ session('success') }}
                         </div>
-                        <div class="fg">
-                            <label class="fl">Appointment Date <span>*</span></label>
-                            <input id="inp-date" class="fi" type="date">
+                    @elseif (session('error'))
+                        <div
+                            style="padding:12px; background:#f8d7da; color:#721c24; border-radius:6px; margin-bottom:15px;">
+                            {{ session('error') }}
                         </div>
-                        <div class="fg">
-                            <label class="fl">Appointment Time <span>*</span></label>
-                            <input id="inp-time" class="fi" type="time">
-                        </div>
-                        <div class="fg">
-                            <label class="fl">Reason for Visit <span>*</span></label>
-                            <textarea id="inp-reason" class="fi" placeholder="Briefly describe your concern…"></textarea>
-                        </div>
-                        <div class="fg">
-                            <label class="fl">Select Office <span>*</span></label>
-                            <div class="og" id="og">
-                                <button class="op" data-val="Registrar" onclick="pick(this)">
-                                    <div class="oi">📋</div>Registrar
-                                </button>
-                                <button class="op" data-val="Cashier" onclick="pick(this)">
-                                    <div class="oi">💳</div>Cashier
-                                </button>
-                                <button class="op" data-val="Guidance" onclick="pick(this)">
-                                    <div class="oi">🧭</div>Guidance
-                                </button>
-                                <button class="op" data-val="Admission" onclick="pick(this)">
-                                    <div class="oi">📝</div>Admission
-                                </button>
-                                <button class="op" data-val="Elem Principal" onclick="pick(this)">
-                                    <div class="oi">🎒</div>Elem Principal
-                                </button>
-                                <button class="op" data-val="Senior Principal" onclick="pick(this)">
-                                    <div class="oi">🎓</div>Sr. Principal
-                                </button>
+                    @endif
+                    <form method="POST" action="{{ route('book.appointment') }}">
+                        @csrf
+
+                        <!-- Hidden role input -->
+                        <input type="hidden" name="role" id="roleInput">
+
+                        <div class="form-body">
+
+                            <div class="fg">
+                                <label class="fl">Parent / Guardian Name <span>*</span></label>
+                                <input class="fi" name="parent_name" type="text" placeholder="e.g. Maria Santos"
+                                    required>
                             </div>
+
+                            <div class="fg">
+                                <label class="fl">Email <span>*</span></label>
+                                <input class="fi" type="email" name="email"
+                                    placeholder="e.g. maria.santos@gmail.com" required>
+                            </div>
+
+                            <div class="fg">
+                                <label class="fl">Appointment Date <span>*</span></label>
+                                <input class="fi" name="appointment_date" type="date" required>
+                            </div>
+
+                            <div class="fg">
+                                <label class="fl">Appointment Time <span>*</span></label>
+                                <input class="fi" name="appointment_time" type="time" required>
+                            </div>
+
+                            <div class="fg">
+                                <label class="fl">Reason for Visit <span>*</span></label>
+                                <textarea class="fi" name="purpose" placeholder="Briefly describe your concern…" required></textarea>
+                            </div>
+
+                            <div class="fg">
+                                <label class="fl">Additional Notes</label>
+                                <textarea class="fi" name="additional_note" placeholder="Add any additional information…"></textarea>
+                            </div>
+
+                            <div class="fg">
+                                <label class="fl">Select Office <span>*</span></label>
+
+                                <div class="og">
+
+                                    <button type="button" class="op" onclick="pick(this,'registrar')">
+                                        <div class="oi">📋</div>Registrar
+                                    </button>
+
+                                    <button type="button" class="op" onclick="pick(this,'cashier')">
+                                        <div class="oi">💳</div>Cashier
+                                    </button>
+
+                                    <button type="button" class="op" onclick="pick(this,'guidance')">
+                                        <div class="oi">🧭</div>Guidance
+                                    </button>
+
+                                    <button type="button" class="op" onclick="pick(this,'elem')">
+                                        <div class="oi">🎒</div>Elem Principal
+                                    </button>
+
+                                    <button type="button" class="op" onclick="pick(this,'sr')">
+                                        <div class="oi">🎓</div>Sr. Principal
+                                    </button>
+                                    <button type="button" class="op" onclick="pick(this,'none')">
+                                        <div class="oi">📝</div>Admission Office
+                                    </button>
+
+                                </div>
+                            </div>
+
                         </div>
-                        <button class="btn-submit" onclick="submit()">
+
+                        <button class="btn-submit" type="submit">
                             <span>📅</span> Confirm Appointment
                         </button>
-                    </div>
+
+                    </form>
                 </div>
             </div>
 
@@ -210,10 +255,15 @@
         document.getElementById('inp-date').value = today;
         document.getElementById('inp-date').min = today;
 
-        function pick(btn) {
-            document.querySelectorAll('.op').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selOffice = btn.dataset.val;
+        function pick(button, role) {
+
+            document.getElementById("roleInput").value = role;
+
+            document.querySelectorAll(".op").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
         }
 
         function obClass(o) {

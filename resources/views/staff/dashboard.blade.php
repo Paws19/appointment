@@ -8,6 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@600;700&display=swap"
         rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('logo/mdalogo.png') }}">
     <style>
         *,
         *::before,
@@ -1039,7 +1040,7 @@
                 </svg>
             </div>
             <div class="logo-school">Mater Dei Academy<br>Tagaytay Inc.</div>
-            <div class="logo-dept">Registrar's Office</div>
+            <div class="logo-dept">{{ $GetRoleOffice }}</div>
         </div>
         <nav class="sidebar-nav">
             <div class="nav-label">Main</div>
@@ -1053,7 +1054,7 @@
                 </svg>
                 Dashboard
             </a>
-            <a class="nav-item" href="#">
+            {{-- <a class="nav-item" href="#">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -1090,7 +1091,7 @@
                     <polyline points="14 2 14 8 20 8" />
                 </svg>
                 Records
-            </a>
+            </a> --}}
         </nav>
         <div class="sidebar-footer">
             <div class="staff-info">
@@ -1108,7 +1109,21 @@
         <div class="topbar">
             <div class="topbar-left">
                 <h1>Appointments Dashboard</h1>
-                <p>Mater Dei Academy Tagaytay Incorporated — Registrar's Office</p>
+                <p>Mater Dei Academy Tagaytay Incorporated
+                    @if ($GetRoleOffice == 'registrar')
+                        - Registrar's Office
+                    @elseif ($GetRoleOffice == 'guidance')
+                        - Guidance Office
+                    @elseif ($GetRoleOffice == 'cashier')
+                        - Cashier's Office
+                    @elseif ($GetRoleOffice == 'none')
+                        - Admission Office
+                    @elseif ($GetRoleOffice == 'elem')
+                        - Elementary Principal's Office
+                    @elseif ($GetRoleOffice == 'sr')
+                        - Senior High Principal's Office
+                    @endif
+                </p>
             </div>
             <div class="topbar-right">
                 <div class="today-badge" id="todayBadge">📅 ...</div>
@@ -1555,10 +1570,10 @@
             document.getElementById('statTotal').textContent = appointments.length;
             document.getElementById('statPending').textContent = appointments.filter(a => a.status === 'Pending').length;
             document.getElementById('statConfirmed').textContent = appointments.filter(a => a.status === 'Confirmed')
-            .length;
+                .length;
             document.getElementById('statDone').textContent = appointments.filter(a => a.status === 'Done').length;
             document.getElementById('statCancelled').textContent = appointments.filter(a => a.status === 'Cancelled')
-            .length;
+                .length;
             ['All', 'Pending', 'Confirmed', 'Done', 'Cancelled'].forEach(k => {
                 document.getElementById('tc-' + k).textContent = k === 'All' ? appointments.length : appointments
                     .filter(a => a.status === k).length;
@@ -1597,19 +1612,19 @@
             View
           </button>
           ${isPending?`
-              <button class="act-btn accept" title="Accept Appointment" onclick="acceptAppt('${a.id}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Accept
-              </button>
-              <button class="act-btn decline" title="Decline Appointment" onclick="declineAppt('${a.id}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Decline
-              </button>`:''}
+                                                                                      <button class="act-btn accept" title="Accept Appointment" onclick="acceptAppt('${a.id}')">
+                                                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                                                                        Accept
+                                                                                      </button>
+                                                                                      <button class="act-btn decline" title="Decline Appointment" onclick="declineAppt('${a.id}')">
+                                                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                                                                        Decline
+                                                                                      </button>`:''}
           ${isConfirmed?`
-              <button class="act-btn done" title="Mark as Done" onclick="markDone('${a.id}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Done
-              </button>`:''}
+                                                                                      <button class="act-btn done" title="Mark as Done" onclick="markDone('${a.id}')">
+                                                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                                                                        Done
+                                                                                      </button>`:''}
           <button class="act-btn del" title="Delete" onclick="deleteAppt('${a.id}')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           </button>

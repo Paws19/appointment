@@ -3,8 +3,10 @@
 namespace App\Models\Staff;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class StaffModel extends Model
+
+class StaffModel extends Authenticatable
 {
     protected $table = 'staff_account';
 
