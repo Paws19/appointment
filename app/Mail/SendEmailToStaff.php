@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Mail;
+namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,13 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SubmittedMail extends Mailable
+class SendEmailToStaff extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
+
     public $appointment;
     public $logoPath;
     public function __construct($appointment)
@@ -24,22 +25,21 @@ class SubmittedMail extends Mailable
         $this->logoPath = public_path('img/logo.png');
     }
 
-    public function build()
-    {
-          return $this->view('email.submitted')
-                    ->with([
-                        'logo' => $this->logoPath,
-                        'appointment' => $this->appointment
-                    ]);
-    }
-
     /**
      * Get the message envelope.
      */
+
+    public function build()
+    {
+        return $this->view('email.sendemailtostaff')
+                    ->with([
+                        'appointment' => $this->appointment,
+                    ]);
+    }
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Submitted Mail',
+            subject: 'Request for Appointment',
         );
     }
 
@@ -49,7 +49,7 @@ class SubmittedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.submitted',
+            view: 'email.sendemailtostaff',
         );
     }
 

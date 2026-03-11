@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="{{ asset('logo/mdalogo.png') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}" />
+    <style>
+        /* CSS */
+        #editAccountModal {
+            display: none;
+            /* hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    </style>
 </head>
 
 <body>
@@ -148,8 +164,8 @@
                             <div class="sched-card-title">Registrar Office</div>
                             <span class="pill elem">Registrar</span>
                         </div>
-                        <div class="count-big">34</div>
-                        <div class="count-label">Active schedules</div>
+                        <div class="count-big">{{ $GetTotalRegistrar ?? 0 }}</div>
+                        <div class="count-label">Appointment Confirmed</div>
 
                     </div>
                     <div class="sched-card">
@@ -157,8 +173,8 @@
                             <div class="sched-card-title">Cashier Office</div>
                             <span class="pill jr">Cashier</span>
                         </div>
-                        <div class="count-big">28</div>
-                        <div class="count-label">Active schedules</div>
+                        <div class="count-big">{{ $GetTotalCashier ?? 0 }}</div>
+                        <div class="count-label">Appointment Confirmed</div>
 
                     </div>
                     <div class="sched-card">
@@ -166,8 +182,8 @@
                             <div class="sched-card-title">Guidance Councelor</div>
                             <span class="pill sr">Guidance</span>
                         </div>
-                        <div class="count-big">80</div>
-                        <div class="count-label">Active schedules</div>
+                        <div class="count-big">{{ $GetTotalGuidance ?? 0 }}</div>
+                        <div class="count-label">Appointment Confirmed</div>
 
                     </div>
                     <div class="sched-card">
@@ -175,8 +191,8 @@
                             <div class="sched-card-title">Junior High Principal</div>
                             <span class="pill sr">JHS</span>
                         </div>
-                        <div class="count-big">80</div>
-                        <div class="count-label">Active schedules</div>
+                        <div class="count-big">{{ $GetTotalElem ?? 0 }}</div>
+                        <div class="count-label">Appointment Confirmed</div>
 
                     </div>
                     <div class="sched-card">
@@ -184,8 +200,8 @@
                             <div class="sched-card-title">Senior High Principal</div>
                             <span class="pill sr">SHS</span>
                         </div>
-                        <div class="count-big">80</div>
-                        <div class="count-label">Active schedules</div>
+                        <div class="count-big">{{ $GetTotalSr ?? 0 }}</div>
+                        <div class="count-label">Appointment Confirmed</div>
 
                     </div>
                 </div>
@@ -220,7 +236,7 @@
                     <div class="stat-card">
                         <div class="stat-top">
                             <div>
-                                <div class="stat-value">34</div>
+                                <div class="stat-value">{{ $GetTotalRegistrarPending ?? 0 }}</div>
                                 <div class="stat-label">Registrar Office</div>
                             </div>
                             <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none"
@@ -233,7 +249,7 @@
                     <div class="stat-card">
                         <div class="stat-top">
                             <div>
-                                <div class="stat-value">28</div>
+                                <div class="stat-value">{{ $GetTotalCashierPending ?? 0 }}</div>
                                 <div class="stat-label">Cashier Office</div>
                             </div>
                             <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none"
@@ -246,7 +262,7 @@
                     <div class="stat-card">
                         <div class="stat-top">
                             <div>
-                                <div class="stat-value">24</div>
+                                <div class="stat-value">{{ $GetTotalGuidancePending ?? 0 }}</div>
                                 <div class="stat-label">Guidance Councelor</div>
                             </div>
                             <div class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none"
@@ -259,8 +275,8 @@
                     <div class="stat-card">
                         <div class="stat-top">
                             <div>
-                                <div class="stat-value">24</div>
-                                <div class="stat-label">Junior High Principal</div>
+                                <div class="stat-value">{{ $GetTotalAdmissionPending ?? 0 }}</div>
+                                <div class="stat-label">Admission Office</div>
                             </div>
                             <div class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2">
@@ -272,7 +288,7 @@
                     <div class="stat-card">
                         <div class="stat-top">
                             <div>
-                                <div class="stat-value">24</div>
+                                <div class="stat-value">{{ $GetTotalSrPending ?? 0 }}</div>
                                 <div class="stat-label">Senior High Principal</div>
                             </div>
                             <div class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none"
@@ -282,97 +298,70 @@
                                 </svg></div>
                         </div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <div>
+                                <div class="stat-value">{{ $GetTotalElemPending ?? 0 }}</div>
+                                <div class="stat-label">Junior High Principal</div>
+                            </div>
+                            <div class="stat-icon amber"><svg viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg></div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="sec-header">
-                    <div class="sec-title">All Schedules</div>
+                    <div class="sec-title">All Appointments</div>
                 </div>
                 <div class="table-wrap">
                     <table>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Subject</th>
-                                <th>Teacher</th>
-                                <th>Level</th>
-                                <th>Section</th>
-                                <th>Days</th>
-                                <th>Time</th>
+                                <th>Reference #</th>
+                                <th>Parent Name</th>
+                                <th>Date & Time</th>
+                                <th>Office</th>
+                                <th>Reason</th>
+                                <th>Additional Note</th>
+                                <th>status</th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mathematics</td>
-                                <td>Mr. Santos</td>
-                                <td><span class="pill elem">Elem</span></td>
-                                <td>Grade 5 – Rizal</td>
-                                <td>Mon / Wed / Fri</td>
-                                <td>7:30 – 8:30 AM</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>English</td>
-                                <td>Ms. Reyes</td>
-                                <td><span class="pill elem">Elem</span></td>
-                                <td>Grade 4 – Mabini</td>
-                                <td>Tue / Thu</td>
-                                <td>8:30 – 10:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Science</td>
-                                <td>Mr. Cruz</td>
-                                <td><span class="pill jr">JHS</span></td>
-                                <td>Grade 7 – A</td>
-                                <td>Mon / Wed / Fri</td>
-                                <td>10:00 – 11:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Filipino</td>
-                                <td>Ms. Garcia</td>
-                                <td><span class="pill jr">JHS</span></td>
-                                <td>Grade 8 – B</td>
-                                <td>Tue / Thu</td>
-                                <td>1:00 – 2:30 PM</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>History</td>
-                                <td>Mr. Dela Cruz</td>
-                                <td><span class="pill sr">SHS</span></td>
-                                <td>Grade 11 – STEM</td>
-                                <td>Mon / Wed</td>
-                                <td>2:30 – 4:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Chemistry</td>
-                                <td>Ms. Lopez</td>
-                                <td><span class="pill sr">SHS</span></td>
-                                <td>Grade 12 – STEM</td>
-                                <td>Tue / Thu / Sat</td>
-                                <td>7:30 – 9:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>MAPEH</td>
-                                <td>Mr. Torres</td>
-                                <td><span class="pill elem">Elem</span></td>
-                                <td>Grade 6 – Luna</td>
-                                <td>Fri</td>
-                                <td>9:00 – 11:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td>TLE</td>
-                                <td>Ms. Mendoza</td>
-                                <td><span class="pill jr">JHS</span></td>
-                                <td>Grade 9 – C</td>
-                                <td>Mon / Thu</td>
-                                <td>3:00 – 4:30 PM</td>
-                            </tr>
+
+                            @foreach ($GetAllBookAppointments as $appointment)
+                                <tr>
+                                    <td>{{ $appointment->reference_number }}</td>
+                                    <td>{{ $appointment->parent_name }}</td>
+                                    <td>{{ $appointment->appointment_date }} {{ $appointment->appointment_time }}</td>
+                                    <td><span class="pill elem">
+
+                                            @if (strtolower($appointment->role) == 'registrar')
+                                                Registrar's Office
+                                            @elseif(strtolower($appointment->role) == 'cashier')
+                                                Cashier's Office
+                                            @elseif(strtolower($appointment->role) == 'guidance')
+                                                Guidance Counselor
+                                            @elseif(strtolower($appointment->role) == 'elem')
+                                                Elementary Principal's Office
+                                            @elseif(strtolower($appointment->role) == 'sr')
+                                                Senior High Principal's Office
+                                            @elseif(strtolower($appointment->role) == 'none')
+                                                Admission Office
+                                            @endif
+
+                                        </span></td>
+                                    <td>{{ $appointment->purpose }}</td>
+                                    <td>{{ $appointment->additional_note }}</td>
+                                    <td>{{ $appointment->status }}</td>
+
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -470,7 +459,93 @@
                     </form>
                 </div>
 
-            </div><!-- /content -->
+            </div>
+
+            <!-- UPDATE ACCOUNT -->
+            <!-- EDIT ACCOUNT MODAL -->
+            <div class="modal" id="editAccountModal">
+                <div class="modal-content"
+                    style="max-width:500px; width:90%; margin:auto; border-radius:12px; overflow:hidden;">
+                    <div class="form-card" style="padding:24px; background:#fff; border-radius:12px;">
+                        <div class="form-title">Edit Staff Account</div>
+
+                        <form id="editAccountForm" method="POST" action="">
+                            @csrf
+                            @method('PUT')
+
+                            <input type="hidden" name="id" id="edit_id">
+
+                            <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                                <div class="form-field">
+                                    <label>First Name</label>
+                                    <input type="text" id="edit_first_name" name="first_name" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Last Name</label>
+                                    <input type="text" id="edit_last_name" name="last_name" required>
+                                </div>
+
+                                <div class="form-field" style="grid-column:1 / -1;">
+                                    <label>Email Address</label>
+                                    <input type="email" id="edit_email" name="email" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Role / Position</label>
+                                    <select name="role" id="edit_role" required>
+                                        <option value="" disabled selected>— Select Role —</option>
+                                        <option value="none">Admission Officer</option>
+                                        <option value="registrar">Registrar</option>
+                                        <option value="cashier">Cashier</option>
+                                        <option value="guidance">Guidance Counselor</option>
+                                        <option value="elem">Elementary Principal</option>
+                                        <option value="sr">Senior High Principal</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Department / Level</label>
+                                    <select name="department" id="edit_level" required>
+                                        <option value="" disabled selected>— Select Level —</option>
+                                        <option value="elem">Elementary</option>
+                                        <option value="jh">Junior High School</option>
+                                        <option value="shs">Senior High School</option>
+                                        <option value="all">All Levels</option>
+                                    </select>
+                                </div>
+
+                                <!-- password -->
+                                <div class="form-field" style="grid-column:1 / -1;">
+                                    <label>Password</label>
+                                    <input type="password" id="edit_password" name="password">
+                                </div>
+
+                                <div class="form-field" style="grid-column:1 / -1;">
+                                    <label>Confirm Password</label>
+                                    <input type="password" id="edit_password_confirmation"
+                                        name="password_confirmation">
+                                </div>
+
+                                <div class="form-field" style="grid-column:1 / -1;">
+                                    <label>Status</label>
+                                    <select name="status" id="edit_status" required>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-actions"
+                                style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px;">
+                                <button type="button" class="btn-lg btn-outline"
+                                    onclick="closeEditModal()">Cancel</button>
+                                <button type="submit" class="btn-lg btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div><!-- /main -->
 
         <!-- DELETE CONFIRM MODAL -->
@@ -488,7 +563,32 @@
         </div>
 
         <div class="toast" id="toast"></div>
+
         <script>
+            function editAccount(id) {
+                // Find the account in your accounts array
+                const account = accounts.find(a => a.id == id);
+                if (!account) return;
+
+                // Fill the modal inputs
+                document.getElementById('edit_id').value = account.id;
+                document.getElementById('edit_first_name').value = account.fname;
+                document.getElementById('edit_last_name').value = account.lname;
+                document.getElementById('edit_email').value = account.email;
+                document.getElementById('edit_role').value = account.role;
+                document.getElementById('edit_level').value = account.level;
+                document.getElementById('edit_status').value = account.status;
+
+                // Set the form action dynamically
+                document.getElementById('editAccountForm').action = `/mda/admin/update-staff/${account.id}`; // adjust route
+
+                // Show the modal
+                document.getElementById('editAccountModal').style.display = 'flex';
+            }
+
+            function closeEditModal() {
+                document.getElementById('editAccountModal').style.display = 'none';
+            }
             document.getElementById("first_name").addEventListener("input", generateEmail);
             document.getElementById("last_name").addEventListener("input", generateEmail);
 
@@ -624,6 +724,17 @@
                 <span style="font-size:11px;color:var(--muted);margin:0 12px;min-width:80px">${a.level}</span>
                 <span class="pill ${a.status==='Active'?'active':'inactive'}">${a.status}</span>
                 <div class="acc-actions">
+                <!-- Edit Button -->
+                <button 
+                    class="icon-btn edit" 
+                    title="Edit"
+                    data-id="${a.id}"
+                    onclick="editAccount(this.dataset.id)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9"/>
+                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                    </svg>
+                </button>
                     <button 
                         class="icon-btn del" 
                         title="Delete"

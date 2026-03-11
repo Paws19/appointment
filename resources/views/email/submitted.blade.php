@@ -112,11 +112,27 @@
                                         <!-- Greeting -->
                                         <p
                                             style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:#1d3577;">
-                                            Dear Parent,</p>
+                                            Dear Parent, {{ $appointment->parent_name }}</p>
                                         <p style="margin:0 0 30px;font-size:14px;color:#4a5068;line-height:1.8;">
+                                            Reference Number: <strong
+                                                style="color:#1d3577;">#{{ $appointment->reference_number }}</strong><br>
                                             We are pleased to confirm that your appointment request has been <strong
                                                 style="color:#1d3577;">successfully received</strong>
-                                            by our administration office. Our team will carefully review the details and
+                                            by our @if ($appointment->role === 'cashier')
+                                                Cashier Staff
+                                            @elseif($appointment->role === 'registrar')
+                                                Registrar's Staff
+                                            @elseif($appointment->role === 'guidance')
+                                                Guidance Staff
+                                            @elseif($appointment->role === 'none')
+                                                Guidance Staff
+                                            @elseif($appointment->role === 'elem')
+                                                Elementary Principal's Staff
+                                            @elseif($appointment->role === 'sr')
+                                                Senior High Principal's Staff
+                                            @else
+                                                {{ $appointment->role }}
+                                            @endif. Our team will carefully review the details and
                                             send you a follow-up
                                             notification once a decision has been made.
                                         </p>
@@ -371,7 +387,22 @@
                                                         style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1d3577;">
                                                         What Happens Next?</p>
                                                     <p style="margin:0;font-size:13px;color:#3a4460;line-height:1.75;">
-                                                        Our administration staff will review your request and send you a
+                                                        Our @if ($appointment->role === 'cashier')
+                                                            Cashier Staff
+                                                        @elseif($appointment->role === 'registrar')
+                                                            Registrar's Staff
+                                                        @elseif($appointment->role === 'guidance')
+                                                            Guidance Staff
+                                                        @elseif($appointment->role === 'none')
+                                                            Guidance Staff
+                                                        @elseif($appointment->role === 'elem')
+                                                            Elementary Principal's Staff
+                                                        @elseif($appointment->role === 'sr')
+                                                            Senior High Principal's Staff
+                                                        @else
+                                                            {{ $appointment->role }}
+                                                        @endif will review your request and send
+                                                        you a
                                                         <strong style="color:#1d3577;">follow-up email</strong>
                                                         confirming or updating your appointment status within
                                                         <strong style="color:#1d3577;">1–2 business days</strong>.
@@ -412,7 +443,21 @@
                                             With warm regards,<br>
                                             <strong style="color:#1d3577;">Mater Dei Academy Tagaytay
                                                 Incorporated</strong><br>
-                                            Administration Office
+                                            @if ($appointment->role === 'cashier')
+                                                Cashier Staff
+                                            @elseif($appointment->role === 'registrar')
+                                                Registrar's Staff
+                                            @elseif($appointment->role === 'guidance')
+                                                Guidance Staff
+                                            @elseif($appointment->role === 'none')
+                                                Guidance Staff
+                                            @elseif($appointment->role === 'elem')
+                                                Elementary Principal's Staff
+                                            @elseif($appointment->role === 'sr')
+                                                Senior High Principal's Staff
+                                            @else
+                                                {{ $appointment->role }}
+                                            @endif
                                         </p>
 
                                     </td>

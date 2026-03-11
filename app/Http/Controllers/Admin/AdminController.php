@@ -70,6 +70,58 @@ class AdminController extends Controller
         ->with('success', 'Staff account created successfully.');
 }
 
+
+public function UpdateStaffAccount(Request $request, $id)
+{
+    // Find the staff account
+    $staff = StaffModel::findOrFail($id);
+
+    // Validation rules
+    $rules = [
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => [
+            'required',
+            'email',
+            'regex:/^[a-z]\.[a-z]+@mda\.edu\.ph$/',
+            'unique:staff_account,email,' . $id, // ignore current record
+        ],
+        'role' => 'required|in:registrar,cashier,guidance,elem,sr,none',
+        'department' => 'required|in:elem,jh,shs,all',
+        'status' => 'required|in:Active,Inactive',
+    ];
+
+    // If password is provided, validate it
+    if ($request->filled('password')) {
+        $rules['password'] = 'nullable|string|min:8|confirmed';
+    }
+
+    $request->validate($rules);
+
+    // Prepare data to update
+    $data = [
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'email' => strtolower($request->email),
+        'role' => $request->role,
+        'department' => $request->department,
+        'status' => $request->status,
+    ];
+
+    // Only update password if provided
+    if ($request->filled('password')) {
+        $data['password'] = Hash::make($request->password);
+    }
+
+    // Update the staff record
+    $staff->update($data);
+
+    return redirect()->route('admin.dashboard')
+        ->with('success', 'Staff account updated successfully.');
+}
+
+
+
   public function deleteAccount($id)
 {
     $staff = StaffModel::find($id);

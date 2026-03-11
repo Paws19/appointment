@@ -36,6 +36,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::delete('/mda/admin/delete-staff/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteAccount'])
         ->name('admin.deleteStaff');
 
+    Route::put('/mda/admin/update-staff/{id}', [App\Http\Controllers\Admin\AdminController::class, 'UpdateStaffAccount'])
+        ->name('admin.updateStaff');
+
 });
 
 Route::middleware('auth:staff')->group(function () {
@@ -44,5 +47,21 @@ Route::middleware('auth:staff')->group(function () {
 
     Route::post('/mda/staff/logout', [App\Http\Controllers\Staff\StaffController::class, 'logout'])
         ->name('staff.logout');
-   
+
+    Route::put('/mda/staff/update-status-confirmed/{id}', [App\Http\Controllers\Staff\StaffController::class, 'updateStatusConfirmed'])
+            ->name('staff.updateStatusConfirmed');
+
+    Route::put('/mda/staff/update-status-cancelled/{id}', [App\Http\Controllers\Staff\StaffController::class, 'updateStatusCancelled'])
+            ->name('staff.updateStatusCancelled');
+
+    Route::put('/mda/staff/update-status-done/{id}', [App\Http\Controllers\Staff\StaffController::class, 'updateStatusDone'])
+            ->name('staff.updateStatusDone');
+
+    Route::delete('/mda/staff/delete-appointment/{id}', [App\Http\Controllers\Staff\StaffController::class, 'deleteAppointment'])
+            ->name('staff.deleteAppointment');
+
+     
+    Route::post('/mda/staff/logout', [App\Http\Controllers\Staff\StaffController::class, 'logoutStaff'])
+            ->name('logoutStaff');
+
 });
